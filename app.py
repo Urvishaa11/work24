@@ -109,6 +109,8 @@ def load_translations():
         translations = {'hindi': {}, 'gujarati': {}}
     return translations
 
+
+
 translations = load_translations()
 
 # Helper function to get translated text
@@ -116,6 +118,9 @@ def get_text(key, lang='english'):
     if lang == 'english':
         return key
     return translations.get(lang, {}).get(key, key)
+
+with app.app_context():
+    db.create_all()
 
 # Make get_text available in all templates
 @app.context_processor
