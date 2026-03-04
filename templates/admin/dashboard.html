@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Work 24</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .admin-header {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .admin-nav {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+        .admin-nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+        }
+        .admin-nav a {
+            color: var(--text-dark);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        .admin-nav a:hover, .admin-nav a.active {
+            background: var(--primary-color);
+            color: var(--accent-color);
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+        .recent-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        .section-header {
+            background: var(--accent-color);
+            color: white;
+            padding: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .section-content {
+            padding: 1.5rem;
+        }
+        .registration-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.3s ease;
+        }
+        .registration-item:hover {
+            background: var(--primary-color);
+        }
+        .registration-item:last-child {
+            border-bottom: none;
+        }
+        .registration-info h4 {
+            margin: 0 0 0.5rem 0;
+            color: var(--text-dark);
+        }
+        .registration-info p {
+            margin: 0;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .status-approved {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .quick-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .action-btn {
+            padding: 0.3rem 0.8rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .btn-approve {
+            background: #28a745;
+            color: white;
+        }
+        .btn-reject {
+            background: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <div>
+            <h1>📊 Admin Dashboard</h1>
+            <p>Welcome back, {{ session.admin_username }}!</p>
+        </div>
+        <div>
+            <a href="{{ url_for('admin_logout') }}" class="btn btn-secondary">Logout</a>
+        </div>
+    </div>
+
+    <div style="max-width: 1400px; margin: 0 auto; padding: 0 2rem;">
+        <nav class="admin-nav">
+            <ul>
+                <li><a href="{{ url_for('admin_dashboard') }}" class="active">Dashboard</a></li>
+                <li><a href="{{ url_for('admin_workers') }}">Workers</a></li>
+                <li><a href="{{ url_for('admin_sellers') }}">Sellers</a></li>
+                <li><a href="{{ url_for('admin_contacts') }}">Messages</a></li>
+                <li><a href="{{ url_for('admin_settings') }}">Settings</a></li>
+            </ul>
+        </nav>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">👷</div>
+                <div class="stat-number">{{ stats.total_workers }}</div>
+                <div class="stat-label">Total Workers</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏪</div>
+                <div class="stat-number">{{ stats.total_sellers }}</div>
+                <div class="stat-label">Total Sellers</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⏳</div>
+                <div class="stat-number">{{ stats.pending_approvals }}</div>
+                <div class="stat-label">Pending Approvals</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📧</div>
+                <div class="stat-number">{{ stats.total_messages }}</div>
+                <div class="stat-label">Unread Messages</div>
+            </div>
+        </div>
+
+        <div class="recent-section">
+            <div class="section-header">
+                🕒 Recent Registrations
+            </div>
+            <div class="section-content">
+                {% if recent_registrations %}
+                    {% for registration in recent_registrations %}
+                    <div class="registration-item">
+                        <div class="registration-info">
+                            <h4>{{ registration.name }}</h4>
+                            <p>{{ registration.type.title() }} • {{ registration.phone }} • {{ registration.date.strftime('%d/%m/%Y %H:%M') }}</p>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <span class="status-badge status-{{ registration.status }}">
+                                {{ registration.status.title() }}
+                            </span>
+                            {% if registration.status == 'pending' %}
+                            <div class="quick-actions">
+                                <button class="action-btn btn-approve" onclick="approveRegistration('{{ registration.id }}')">
+                                    ✓
+                                </button>
+                                <button class="action-btn btn-reject" onclick="rejectRegistration('{{ registration.id }}')">
+                                    ✗
+                                </button>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p style="text-align: center; color: var(--text-light); padding: 2rem;">
+                        No recent registrations found.
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function approveRegistration(id) {
+            if (confirm('Are you sure you want to approve this registration?')) {
+                fetch(`/admin/approve-registration/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                });
+            }
+        }
+
+        function rejectRegistration(id) {
+            if (confirm('Are you sure you want to reject this registration?')) {
+                fetch(`/admin/reject-registration/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

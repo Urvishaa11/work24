@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+
+{% block title %}{{ get_text('Materials', lang) }} - Work 24{% endblock %}
+
+{% block content %}
+<section style="padding: 2rem 0;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+        <h1 style="text-align: center; margin-bottom: 2rem; color: var(--text-dark);">
+            🛒 {{ get_text('Materials Store', lang) }}
+        </h1>
+        
+        <!-- Search and Filter -->
+        <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: var(--shadow); margin-bottom: 2rem;">
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+                <input type="text" id="materialSearch" class="form-control" style="flex: 1; min-width: 250px;" 
+                       placeholder="{{ get_text('Search materials...', lang) }}">
+                
+                <select id="materialCategory" class="form-control" style="min-width: 200px;">
+                    <option value="">{{ get_text('All Categories', lang) }}</option>
+                    <option value="tools">{{ get_text('Tools', lang) }}</option>
+                    <option value="wood">{{ get_text('Wood', lang) }}</option>
+                    <option value="hardware">{{ get_text('Hardware', lang) }}</option>
+                    <option value="paint">{{ get_text('Paint', lang) }}</option>
+                    <option value="electrical">{{ get_text('Electrical', lang) }}</option>
+                    <option value="plumbing">{{ get_text('Plumbing', lang) }}</option>
+                </select>
+                
+                <button class="btn btn-primary" onclick="searchMaterials()">
+                    🔍 {{ get_text('Search', lang) }}
+                </button>
+            </div>
+        </div>
+
+        <!-- Material Categories -->
+        {% if not selected_category %}
+        <div class="services-grid" style="margin-bottom: 3rem;">
+            <div class="service-card" onclick="filterMaterials('tools')">
+                <div class="service-icon">🔧</div>
+                <h3 class="service-title">{{ get_text('Tools', lang) }}</h3>
+                <p class="service-count">{{ get_text('Hammers, Drills, Saws', lang) }}</p>
+            </div>
+            
+            <div class="service-card" onclick="filterMaterials('wood')">
+                <div class="service-icon">🪵</div>
+                <h3 class="service-title">{{ get_text('Wood', lang) }}</h3>
+                <p class="service-count">{{ get_text('Plywood, Timber, Boards', lang) }}</p>
+            </div>
+            
+            <div class="service-card" onclick="filterMaterials('hardware')">
+                <div class="service-icon">🔩</div>
+                <h3 class="service-title">{{ get_text('Hardware', lang) }}</h3>
+                <p class="service-count">{{ get_text('Screws, Nails, Bolts', lang) }}</p>
+            </div>
+            
+            <div class="service-card" onclick="filterMaterials('paint')">
+                <div class="service-icon">🎨</div>
+                <h3 class="service-title">{{ get_text('Paint', lang) }}</h3>
+                <p class="service-count">{{ get_text('Interior, Exterior, Primer', lang) }}</p>
+            </div>
+            
+            <div class="service-card" onclick="filterMaterials('electrical')">
+                <div class="service-icon">⚡</div>
+                <h3 class="service-title">{{ get_text('Electrical', lang) }}</h3>
+                <p class="service-count">{{ get_text('Wires, Switches, Lights', lang) }}</p>
+            </div>
+            
+            <div class="service-card" onclick="filterMaterials('plumbing')">
+                <div class="service-icon">🚿</div>
+                <h3 class="service-title">{{ get_text('Plumbing', lang) }}</h3>
+                <p class="service-count">{{ get_text('Pipes, Fittings, Taps', lang) }}</p>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Sample Materials (since we don't have real data yet) -->
+        <div id="materialsResults">
+            {% if selected_category %}
+                <h2 style="margin-bottom: 2rem; color: var(--text-dark);">
+                    {{ get_text(selected_category.title(), lang) }} {{ get_text('Materials', lang) }}
+                </h2>
+            {% endif %}
+            
+            <!-- Sample Material Cards -->
+            <div class="services-grid">
+                <div class="profile-card">
+                    <div style="height: 200px; background: var(--secondary-color); border-radius: 10px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; font-size: 3rem;">
+                        🔨
+                    </div>
+                    <h3>{{ get_text('Professional Hammer Set', lang) }}</h3>
+                    <p style="color: var(--text-light);">{{ get_text('High quality steel hammers for all construction work', lang) }}</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
+                        <span style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color);">₹850</span>
+                        <span style="color: var(--nature-color);">⭐ 4.6 (45 {{ get_text('reviews', lang) }})</span>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <span style="color: var(--text-light);">{{ get_text('Seller', lang) }}: </span>
+                        <strong>{{ get_text('Sharma Hardware', lang) }}</strong>
+                    </div>
+                    <div class="profile-actions">
+                        <button class="btn btn-primary btn-small" onclick="addToCart(1)">
+                            🛒 {{ get_text('Add to Cart', lang) }}
+                        </button>
+                        <button class="btn btn-secondary btn-small" onclick="contactSeller(1)">
+                            📞 {{ get_text('Contact Seller', lang) }}
+                        </button>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div style="height: 200px; background: var(--nature-color); border-radius: 10px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; font-size: 3rem;">
+                        🪵
+                    </div>
+                    <h3>{{ get_text('Premium Plywood Sheet', lang) }}</h3>
+                    <p style="color: var(--text-light);">{{ get_text('18mm waterproof plywood for furniture making', lang) }}</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
+                        <span style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color);">₹2,500</span>
+                        <span style="color: var(--nature-color);">⭐ 4.8 (32 {{ get_text('reviews', lang) }})</span>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <span style="color: var(--text-light);">{{ get_text('Seller', lang) }}: </span>
+                        <strong>{{ get_text('Wood World', lang) }}</strong>
+                    </div>
+                    <div class="profile-actions">
+                        <button class="btn btn-primary btn-small" onclick="addToCart(2)">
+                            🛒 {{ get_text('Add to Cart', lang) }}
+                        </button>
+                        <button class="btn btn-secondary btn-small" onclick="contactSeller(2)">
+                            📞 {{ get_text('Contact Seller', lang) }}
+                        </button>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div style="height: 200px; background: var(--accent-color); border-radius: 10px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; font-size: 3rem;">
+                        🎨
+                    </div>
+                    <h3>{{ get_text('Wall Paint - Premium Quality', lang) }}</h3>
+                    <p style="color: var(--text-light);">{{ get_text('Weather resistant exterior paint, 20L bucket', lang) }}</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
+                        <span style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color);">₹3,200</span>
+                        <span style="color: var(--nature-color);">⭐ 4.7 (28 {{ get_text('reviews', lang) }})</span>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <span style="color: var(--text-light);">{{ get_text('Seller', lang) }}: </span>
+                        <strong>{{ get_text('Color Palace', lang) }}</strong>
+                    </div>
+                    <div class="profile-actions">
+                        <button class="btn btn-primary btn-small" onclick="addToCart(3)">
+                            🛒 {{ get_text('Add to Cart', lang) }}
+                        </button>
+                        <button class="btn btn-secondary btn-small" onclick="contactSeller(3)">
+                            📞 {{ get_text('Contact Seller', lang) }}
+                        </button>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div style="height: 200px; background: var(--secondary-color); border-radius: 10px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; font-size: 3rem;">
+                        ⚡
+                    </div>
+                    <h3>{{ get_text('Electrical Wire Bundle', lang) }}</h3>
+                    <p style="color: var(--text-light);">{{ get_text('Copper wires for home electrical work, 100m roll', lang) }}</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
+                        <span style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color);">₹1,800</span>
+                        <span style="color: var(--nature-color);">⭐ 4.5 (52 {{ get_text('reviews', lang) }})</span>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <span style="color: var(--text-light);">{{ get_text('Seller', lang) }}: </span>
+                        <strong>{{ get_text('Electric Hub', lang) }}</strong>
+                    </div>
+                    <div class="profile-actions">
+                        <button class="btn btn-primary btn-small" onclick="addToCart(4)">
+                            🛒 {{ get_text('Add to Cart', lang) }}
+                        </button>
+                        <button class="btn btn-secondary btn-small" onclick="contactSeller(4)">
+                            📞 {{ get_text('Contact Seller', lang) }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+function filterMaterials(category) {
+    window.location.href = `{{ url_for('materials') }}?category=${category}`;
+}
+
+function searchMaterials() {
+    const searchInput = document.getElementById('materialSearch');
+    const categoryFilter = document.getElementById('materialCategory');
+    
+    let url = `{{ url_for('materials') }}?`;
+    
+    if (searchInput.value.trim()) {
+        url += `q=${encodeURIComponent(searchInput.value.trim())}&`;
+    }
+    
+    if (categoryFilter.value) {
+        url += `category=${categoryFilter.value}`;
+    }
+    
+    window.location.href = url;
+}
+
+document.getElementById('materialSearch').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        searchMaterials();
+    }
+});
+</script>
+{% endblock %}

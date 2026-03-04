@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}{{ get_text('Services', lang) }} - Work 24{% endblock %}
+
+{% block content %}
+<section style="padding: 2rem 0;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+        <h1 style="text-align: center; margin-bottom: 2rem; color: var(--text-dark);">
+            🔧 {{ get_text('Our Services', lang) }}
+        </h1>
+        
+        <!-- Search and Filter -->
+        <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: var(--shadow); margin-bottom: 2rem;">
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+                <input type="text" id="searchInput" class="form-control" style="flex: 1; min-width: 250px;" 
+                       placeholder="{{ get_text('Search for services...', lang) }}">
+                
+                <select id="categoryFilter" class="form-control" style="min-width: 200px;">
+                    <option value="">{{ get_text('All Categories', lang) }}</option>
+                    <option value="furniture" {{ 'selected' if selected_category == 'furniture' else '' }}>{{ get_text('Furniture', lang) }}</option>
+                    <option value="plumbing" {{ 'selected' if selected_category == 'plumbing' else '' }}>{{ get_text('Plumbing', lang) }}</option>
+                    <option value="electrical" {{ 'selected' if selected_category == 'electrical' else '' }}>{{ get_text('Electrical', lang) }}</option>
+                    <option value="painting" {{ 'selected' if selected_category == 'painting' else '' }}>{{ get_text('Painting', lang) }}</option>
+                    <option value="cleaning" {{ 'selected' if selected_category == 'cleaning' else '' }}>{{ get_text('Cleaning', lang) }}</option>
+                    <option value="ac_repair" {{ 'selected' if selected_category == 'ac_repair' else '' }}>{{ get_text('AC Repair', lang) }}</option>
+                </select>
+                
+                <button class="btn btn-primary" onclick="performSearch()">
+                    🔍 {{ get_text('Search', lang) }}
+                </button>
+            </div>
+        </div>
+
+        <!-- Service Categories -->
+        {% if not selected_category %}
+        <div class="services-grid" style="margin-bottom: 3rem;">
+            <div class="service-card" onclick="filterByCategory('furniture')">
+                <div class="service-icon">🪑</div>
+                <h3 class="service-title">{{ get_text('Furniture', lang) }}</h3>
+                <p class="service-count">{{ categories.get('furniture', [])|length }} {{ get_text('Workers', lang) }}</p>
+                <p class="service-description">{{ get_text('Repair, making, installation', lang) }}</p>
+            </div>
+            
+            <div class="service-card" onclick="filterByCategory('plumbing')">
+                <div class="service-icon">🔧</div>
+                <h3 class="service-title">{{ get_text('Plumbing', lang) }}</h3>
+                <p class="service-count">{{ categories.get('plumbing', [])|length }} {{ get_text('Workers', lang) }}</p>
+                <p class="service-description">{{ get_text('Pipes, fittings, repairs', lang) }}</p>
+            </div>
+            
+            <div class="service-card" onclick="filterByCategory('electrical')">
+                <div class="service-icon">⚡</div>
+                <h3 class="service-title">{{ get_text('Electrical', lang) }}</h3>
+                <p class="service-count">{{ categories.get('electrical', [])|length }} {{ get_text('Workers', lang) }}</p>
+                <p class="service-description">{{ get_text('Wiring, installation, repairs', lang) }}</p>
+            </div>
+            
+            <div class="service-card" onclick="filterByCategory('painting')">
+                <div class="service-icon">🎨</div>
+                <h3 class="service-title">{{ get_text('Painting', lang) }}</h3>
+                <p class="service-count">{{ categories.get('painting', [])|length }} {{ get_text('Workers', lang) }}</p>
+                <p class="service-description">{{ get_text('Interior, exterior, texture', lang) }}</p>
+            </div>
+            
+            <div class="service-card" onclick="filterByCategory('cleaning')">
+                <div class="service-icon">🏠</div>
+                <h3 class="service-title">{{ get_text('Cleaning', lang) }}</h3>
+                <p class="service-count">{{ categories.get('cleaning', [])|length }} {{ get_text('Workers', lang) }}</p>
+                <p class="service-description">{{ get_text('Deep cleaning, maintenance', lang) }}</p>
+            </div>
+            
+            <div class="service-card" onclick="filterByCategory('ac_repair')">
+                <div class="service-icon">❄️</div>
+                <h3 class="service-title">{{ get_text('AC Repair', lang) }}</h3>
+                <p class="service-count">{{ categories.get('ac_repair', [])|length }} {{ get_text('Workers', lang) }}</p>
+                <p class="service-description">{{ get_text('Installation, repair, maintenance', lang) }}</p>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Workers List -->
+        <div id="searchResults">
+            {% if selected_category and categories.get(selected_category) %}
+                <h2 style="margin-bottom: 2rem; color: var(--text-dark);">
+                    {{ get_text(selected_category.title(), lang) }} {{ get_text('Workers', lang) }}
+                </h2>
+                
+                {% for worker in categories[selected_category] %}
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar">{{ worker.name[0] }}</div>
+                        <div class="profile-info">
+                            <h3>{{ worker.name }}</h3>
+                            <div class="profile-rating">
+                                <span class="stars">
+                                    {% for i in range(5) %}
+                                        {% if i < worker.rating %}★{% else %}☆{% endif %}
+                                    {% endfor %}
+                                </span>
+                                <span>{{ worker.rating }} ({{ worker.total_reviews }} {{ get_text('reviews', lang) }})</span>
+                            </div>
+                            <p style="color: var(--text-light);">{{ worker.experience }} {{ get_text('years experience', lang) }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-details">
+                        <div class="detail-item">
+                            <span>🔧</span>
+                            <span>{{ get_text(worker.category.title(), lang) }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>📱</span>
+                            <span>{{ worker.phone }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>📧</span>
+                            <span>{{ worker.email }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>📍</span>
+                            <span>{{ worker.address[:50] }}...</span>
+                        </div>
+                    </div>
+                    
+                    {% if worker.description %}
+                    <p style="margin: 1rem 0; color: var(--text-light);">{{ worker.description }}</p>
+                    {% endif %}
+                    
+                    <div class="profile-actions">
+                        <button class="btn btn-primary btn-small" onclick="bookService({{ worker.id }})">
+                            📅 {{ get_text('Book Now', lang) }}
+                        </button>
+                        <button class="btn btn-secondary btn-small" onclick="viewProfile({{ worker.id }})">
+                            👤 {{ get_text('View Profile', lang) }}
+                        </button>
+                        <button class="btn btn-secondary btn-small" onclick="chatWithWorker({{ worker.id }})">
+                            💬 {{ get_text('Chat', lang) }}
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            {% elif not selected_category %}
+                <p style="text-align: center; color: var(--text-light); font-size: 1.1rem;">
+                    {{ get_text('Select a category above to view workers', lang) }}
+                </p>
+            {% else %}
+                <p style="text-align: center; color: var(--text-light); font-size: 1.1rem;">
+                    {{ get_text('No workers found in this category', lang) }}
+                </p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<script>
+function filterByCategory(category) {
+    window.location.href = `{{ url_for('services') }}?category=${category}`;
+}
+
+function performSearch() {
+    const searchInput = document.getElementById('searchInput');
+    const categoryFilter = document.getElementById('categoryFilter');
+    
+    let url = `{{ url_for('services') }}?`;
+    
+    if (searchInput.value.trim()) {
+        url += `q=${encodeURIComponent(searchInput.value.trim())}&`;
+    }
+    
+    if (categoryFilter.value) {
+        url += `category=${categoryFilter.value}`;
+    }
+    
+    window.location.href = url;
+}
+
+// Allow search on Enter key
+document.getElementById('searchInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        performSearch();
+    }
+});
+</script>
+{% endblock %}

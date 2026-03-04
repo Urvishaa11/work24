@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Work 24 - Your Service Partner{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <meta name="description" content="Work 24 - Connecting skilled workers, sellers and customers across India">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Language Selection Modal -->
+    <div id="languageModal" class="language-modal" style="display: none;">
+        <div class="language-content">
+            <h2>🔧 WORK 24</h2>
+            <p>Choose Your Language<br>अपनी भाषा चुनें<br>તમારી ભાષા પસંદ કરો</p>
+            <div class="language-options">
+                <button class="language-option" data-lang="hindi">🇮🇳 हिंदी</button>
+                <button class="language-option" data-lang="english">🇬🇧 English</button>
+                <button class="language-option" data-lang="gujarati">🇮🇳 ગુજરાતી</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="logo">🔧 WORK 24</a>
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="{{ url_for('index') }}">{{ get_text('Home', lang) }}</a></li>
+                    <li><a href="{{ url_for('services') }}">{{ get_text('Services', lang) }}</a></li>
+                    <li><a href="{{ url_for('materials') }}">{{ get_text('Materials', lang) }}</a></li>
+                    <li><a href="{{ url_for('architect') }}">{{ get_text('Architect', lang) }}</a></li>
+                    <li><a href="{{ url_for('career') }}">{{ get_text('Career', lang) }}</a></li>
+                    <li><a href="{{ url_for('contact') }}">{{ get_text('Contact', lang) }}</a></li>
+                </ul>
+            </nav>
+
+            <div class="language-selector">
+                <button class="lang-btn {{ 'active' if lang == 'hindi' else '' }}" onclick="setLanguage('hindi')">हिं</button>
+                <button class="lang-btn {{ 'active' if lang == 'english' else '' }}" onclick="setLanguage('english')">EN</button>
+                <button class="lang-btn {{ 'active' if lang == 'gujarati' else '' }}" onclick="setLanguage('gujarati')">ગુ</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-wrapper">
+            <!-- Footer Top Section -->
+            <div class="footer-top">
+                <div class="footer-grid">
+                    <!-- Brand Section -->
+                    <div class="footer-brand">
+                        <h2 class="footer-logo">🔧 WORK 24</h2>
+                        <p class="footer-description">
+                            {{ get_text('Your trusted platform connecting skilled workers, quality materials, and professional architects with customers who need reliable solutions.', lang) }}
+                        </p>
+                        
+                        <!-- Highlighted Turnkey Message -->
+                        <div class="turnkey-highlight">
+                            <i class="fas fa-star"></i>
+                            <span>{{ get_text('We do all kind of turnkey projects and whole site works.', lang) }}</span>
+                        </div>
+                        
+                        <div class="footer-social">
+                            <a href="#" class="social-icon" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="social-icon" title="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="social-icon" title="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-icon" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Quick Links -->
+                    <div class="footer-section">
+                        <h3>{{ get_text('Quick Links', lang) }}</h3>
+                        <ul class="footer-links">
+                            <li><a href="{{ url_for('index') }}">{{ get_text('Home', lang) }}</a></li>
+                            <li><a href="{{ url_for('services') }}">{{ get_text('Services', lang) }}</a></li>
+                            <li><a href="{{ url_for('materials') }}">{{ get_text('Materials', lang) }}</a></li>
+                            <li><a href="{{ url_for('architect') }}">{{ get_text('Architects', lang) }}</a></li>
+                            <li><a href="{{ url_for('career') }}">{{ get_text('Careers', lang) }}</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Our Services -->
+                    <div class="footer-section">
+                        <h3>{{ get_text('Our Services', lang) }}</h3>
+                        <ul class="footer-links">
+                            <li><a href="#">{{ get_text('Furniture', lang) }}</a></li>
+                            <li><a href="#">{{ get_text('Painting', lang) }}</a></li>
+                            <li><a href="#">{{ get_text('Fabrication', lang) }}</a></li>
+                            <li><a href="#">{{ get_text('Plumbing', lang) }}</a></li>
+                            <li><a href="#">{{ get_text('Electrical', lang) }}</a></li>
+                            <li><a href="#">{{ get_text('Custom Work', lang) }}</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div class="footer-section">
+                        <h3>{{ get_text('Contact Us', lang) }}</h3>
+                        <ul class="footer-contact">
+                            <li>
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Sector 15, Gandhinagar<br>Gujarat - 382015, India</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-phone"></i>
+                                <a href="tel:+911800967524">+91-1800-WORK-24</a>
+                            </li>
+                            <li>
+                                <i class="fas fa-envelope"></i>
+                                <a href="mailto:support@work24.com">support@work24.com</a>
+                            </li>
+                            <li>
+                                <i class="fas fa-globe"></i>
+                                <a href="#">www.work24.com</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Bottom Section -->
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2024 Work 24. {{ get_text('All rights reserved', lang) }}.</p>
+                    <div class="footer-links-bottom">
+                        <a href="#">{{ get_text('Privacy Policy', lang) }}</a>
+                        <span>|</span>
+                        <a href="#">{{ get_text('Terms & Conditions', lang) }}</a>
+                        <span>|</span>
+                        <a href="#">{{ get_text('Sitemap', lang) }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        function setLanguage(lang) {
+            window.location.href = `/set_language/${lang}`;
+        }
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

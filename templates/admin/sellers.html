@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sellers Management - Work 24 Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .admin-header {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .admin-nav {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .admin-nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+        }
+        .admin-nav a {
+            color: #333;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        .admin-nav a:hover, .admin-nav a.active {
+            background: #f0f8ff;
+            color: #3498db;
+        }
+        .data-table {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .table-header {
+            background: #3498db;
+            color: white;
+            padding: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .table-content {
+            padding: 1.5rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .status-approved {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+        }
+        .btn-approve {
+            background: #28a745;
+            color: white;
+        }
+        .btn-reject {
+            background: #dc3545;
+            color: white;
+        }
+        .btn-view {
+            background: #3498db;
+            color: white;
+        }
+        .no-data {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <div>
+            <h1>🏪 Sellers Management</h1>
+            <p>Manage seller registrations and profiles</p>
+        </div>
+        <div>
+            <a href="{{ url_for('admin_logout') }}" class="btn btn-secondary">Logout</a>
+        </div>
+    </div>
+
+    <div style="max-width: 1400px; margin: 0 auto; padding: 0 2rem;">
+        <nav class="admin-nav">
+            <ul>
+                <li><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('admin_workers') }}">Workers</a></li>
+                <li><a href="{{ url_for('admin_sellers') }}" class="active">Sellers</a></li>
+                <li><a href="{{ url_for('admin_contacts') }}">Messages</a></li>
+                <li><a href="{{ url_for('admin_settings') }}">Settings</a></li>
+            </ul>
+        </nav>
+
+        <div class="data-table">
+            <div class="table-header">
+                🏪 All Sellers
+            </div>
+            <div class="table-content">
+                {% if sellers %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Shop Name</th>
+                            <th>Owner</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for seller in sellers %}
+                        <tr>
+                            <td>{{ seller.shop_name }}</td>
+                            <td>{{ seller.owner_name }}</td>
+                            <td>{{ seller.phone }}</td>
+                            <td>{{ seller.email }}</td>
+                            <td>{{ seller.address[:50] }}...</td>
+                            <td>
+                                <span class="status-badge status-{{ seller.status }}">
+                                    {{ seller.status.title() }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if seller.status == 'pending' %}
+                                <button class="action-btn btn-approve" onclick="approveSeller('{{ seller.id }}')">
+                                    ✓ Approve
+                                </button>
+                                <button class="action-btn btn-reject" onclick="rejectSeller('{{ seller.id }}')">
+                                    ✗ Reject
+                                </button>
+                                {% endif %}
+                                <button class="action-btn btn-view" onclick="viewSeller('{{ seller.id }}')">
+                                    👁 View
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="no-data">
+                    <h3>No Sellers Yet</h3>
+                    <p>No seller registrations found. Sellers will appear here once they register.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function approveSeller(id) {
+            if (confirm('Are you sure you want to approve this seller?')) {
+                fetch(`/admin/approve-seller/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                });
+            }
+        }
+
+        function rejectSeller(id) {
+            if (confirm('Are you sure you want to reject this seller?')) {
+                fetch(`/admin/reject-seller/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                });
+            }
+        }
+
+        function viewSeller(id) {
+            alert('Seller details for ID: ' + id);
+        }
+    </script>
+</body>
+</html>

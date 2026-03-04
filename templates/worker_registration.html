@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}{{ get_text('Worker Registration', lang) }} - Work 24{% endblock %}
+
+{% block content %}
+<section style="padding: 2rem 0;">
+    <div class="form-container">
+        <h1 style="text-align: center; margin-bottom: 2rem; color: var(--text-dark);">
+            👷 {{ get_text('Worker Registration', lang) }}
+        </h1>
+        
+        <p style="text-align: center; color: var(--text-light); margin-bottom: 3rem;">
+            {{ get_text('Join our network of skilled professionals', lang) }}
+        </p>
+
+        <form method="POST" enctype="multipart/form-data" id="workerForm">
+            <!-- Personal Details -->
+            <h3 style="color: var(--accent-color); margin-bottom: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
+                {{ get_text('Personal Details', lang) }}
+            </h3>
+            
+            <div class="form-group">
+                <label for="name">{{ get_text('Full Name', lang) }} *</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label for="phone">{{ get_text('Phone Number', lang) }} *</label>
+                    <input type="tel" id="phone" name="phone" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">{{ get_text('Email Address', lang) }} *</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="address">{{ get_text('Complete Address', lang) }} *</label>
+                <textarea id="address" name="address" class="form-control" rows="3" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="aadhar">{{ get_text('Aadhar Card Number', lang) }} *</label>
+                <input type="text" id="aadhar" name="aadhar" class="form-control" maxlength="12" required>
+            </div>
+
+            <!-- Professional Details -->
+            <h3 style="color: var(--accent-color); margin: 2rem 0 1rem 0; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
+                {{ get_text('Professional Details', lang) }}
+            </h3>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label for="category">{{ get_text('Service Category', lang) }} *</label>
+                    <select id="category" name="category" class="form-control" required>
+                        <option value="">{{ get_text('Select Category', lang) }}</option>
+                        <option value="furniture">{{ get_text('Furniture', lang) }}</option>
+                        <option value="plumbing">{{ get_text('Plumbing', lang) }}</option>
+                        <option value="electrical">{{ get_text('Electrical', lang) }}</option>
+                        <option value="painting">{{ get_text('Painting', lang) }}</option>
+                        <option value="cleaning">{{ get_text('Cleaning', lang) }}</option>
+                        <option value="ac_repair">{{ get_text('AC Repair', lang) }}</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="experience">{{ get_text('Years of Experience', lang) }} *</label>
+                    <select id="experience" name="experience" class="form-control" required>
+                        <option value="">{{ get_text('Select Experience', lang) }}</option>
+                        <option value="1">1 {{ get_text('year', lang) }}</option>
+                        <option value="2">2 {{ get_text('years', lang) }}</option>
+                        <option value="3">3 {{ get_text('years', lang) }}</option>
+                        <option value="4">4 {{ get_text('years', lang) }}</option>
+                        <option value="5">5+ {{ get_text('years', lang) }}</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">{{ get_text('Describe Your Skills & Experience', lang) }}</label>
+                <textarea id="description" name="description" class="form-control" rows="4" 
+                         placeholder="{{ get_text('Tell us about your expertise, specializations, and notable projects...', lang) }}"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="portfolio">{{ get_text('Portfolio Images', lang) }}</label>
+                <input type="file" id="portfolio" name="portfolio" class="form-control" multiple accept="image/*">
+                <small style="color: var(--text-light);">{{ get_text('Upload photos of your previous work (optional)', lang) }}</small>
+            </div>
+
+            <!-- Terms and Conditions -->
+            <div class="form-group">
+                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <span>{{ get_text('I agree to the', lang) }} <a href="#" style="color: var(--accent-color);">{{ get_text('Terms and Conditions', lang) }}</a></span>
+                </label>
+            </div>
+            
+            <div class="form-group">
+                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                    <input type="checkbox" id="quality" name="quality" required>
+                    <span>{{ get_text('I commit to providing quality service and professional behavior', lang) }}</span>
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem;">
+                📤 {{ get_text('Submit Registration', lang) }}
+            </button>
+        </form>
+
+        <!-- What Happens Next -->
+        <div style="margin-top: 3rem; padding: 2rem; background: var(--primary-color); border-radius: 10px;">
+            <h3 style="color: var(--accent-color); margin-bottom: 1rem;">{{ get_text('What Happens Next?', lang) }}</h3>
+            <ol style="color: var(--text-light); line-height: 1.8;">
+                <li>{{ get_text('We will review your application within 2-3 business days', lang) }}</li>
+                <li>{{ get_text('Our team may contact you for document verification', lang) }}</li>
+                <li>{{ get_text('Once approved, your profile will go live on the platform', lang) }}</li>
+                <li>{{ get_text('You will start receiving service requests from customers', lang) }}</li>
+            </ol>
+        </div>
+    </div>
+</section>
+
+<script>
+document.getElementById('workerForm').addEventListener('submit', function(e) {
+    const phone = document.getElementById('phone').value;
+    const aadhar = document.getElementById('aadhar').value;
+    
+    // Phone validation
+    if (!/^[6-9]\d{9}$/.test(phone)) {
+        e.preventDefault();
+        alert('{{ get_text("Please enter a valid 10-digit phone number", lang) }}');
+        return;
+    }
+    
+    // Aadhar validation
+    if (!/^\d{12}$/.test(aadhar)) {
+        e.preventDefault();
+        alert('{{ get_text("Please enter a valid 12-digit Aadhar number", lang) }}');
+        return;
+    }
+    
+    // Show loading state
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    submitBtn.innerHTML = '<div class="loading"></div> {{ get_text("Submitting...", lang) }}';
+    submitBtn.disabled = true;
+});
+
+// Format Aadhar input
+document.getElementById('aadhar').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length > 12) value = value.slice(0, 12);
+    e.target.value = value;
+});
+
+// Format phone input
+document.getElementById('phone').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length > 10) value = value.slice(0, 10);
+    e.target.value = value;
+});
+</script>
+{% endblock %}

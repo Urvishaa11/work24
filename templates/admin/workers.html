@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workers Management - Work 24 Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .admin-header {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .admin-nav {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+        .admin-nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+        }
+        .admin-nav a {
+            color: var(--text-dark);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        .admin-nav a:hover, .admin-nav a.active {
+            background: var(--primary-color);
+            color: var(--accent-color);
+        }
+        .data-table {
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        .table-header {
+            background: var(--accent-color);
+            color: white;
+            padding: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .table-content {
+            padding: 1.5rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        th {
+            background: var(--primary-color);
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .status-approved {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+        }
+        .btn-approve {
+            background: #28a745;
+            color: white;
+        }
+        .btn-reject {
+            background: #dc3545;
+            color: white;
+        }
+        .btn-view {
+            background: var(--accent-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <div>
+            <h1>👷 Workers Management</h1>
+            <p>Manage worker registrations and profiles</p>
+        </div>
+        <div>
+            <a href="{{ url_for('admin_logout') }}" class="btn btn-secondary">Logout</a>
+        </div>
+    </div>
+
+    <div style="max-width: 1400px; margin: 0 auto; padding: 0 2rem;">
+        <nav class="admin-nav">
+            <ul>
+                <li><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('admin_workers') }}" class="active">Workers</a></li>
+                <li><a href="{{ url_for('admin_sellers') }}">Sellers</a></li>
+                <li><a href="{{ url_for('admin_contacts') }}">Messages</a></li>
+                <li><a href="{{ url_for('admin_settings') }}">Settings</a></li>
+            </ul>
+        </nav>
+
+        <div class="data-table">
+            <div class="table-header">
+                👷 All Workers
+            </div>
+            <div class="table-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Experience</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for worker in workers %}
+                        <tr>
+                            <td>{{ worker.name }}</td>
+                            <td>{{ worker.category.title() }}</td>
+                            <td>{{ worker.experience }} years</td>
+                            <td>{{ worker.phone }}</td>
+                            <td>{{ worker.email }}</td>
+                            <td>
+                                <span class="status-badge status-{{ worker.status }}">
+                                    {{ worker.status.title() }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if worker.status == 'pending' %}
+                                <button class="action-btn btn-approve" onclick="approveWorker('{{ worker.id }}')">
+                                    ✓ Approve
+                                </button>
+                                <button class="action-btn btn-reject" onclick="rejectWorker('{{ worker.id }}')">
+                                    ✗ Reject
+                                </button>
+                                {% endif %}
+                                <button class="action-btn btn-view" onclick="viewWorker('{{ worker.id }}')">
+                                    👁 View
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function approveWorker(id) {
+            if (confirm('Are you sure you want to approve this worker?')) {
+                fetch(`/admin/approve-worker/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                });
+            }
+        }
+
+        function rejectWorker(id) {
+            if (confirm('Are you sure you want to reject this worker?')) {
+                fetch(`/admin/reject-worker/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                });
+            }
+        }
+
+        function viewWorker(id) {
+            alert('Worker details for ID: ' + id);
+        }
+    </script>
+</body>
+</html>

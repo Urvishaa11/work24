@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}Work 24 - {{ get_text('Your Service Partner', lang) }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>🔧 WORK 24</h1>
+        <h2>{{ get_text('Your Service Partner', lang) }}</h2>
+        <p>{{ get_text('Connecting skilled workers, sellers & customers across India', lang) }}</p>
+        
+        <div class="cta-buttons">
+            <a href="{{ url_for('services') }}" class="btn btn-primary">
+                🔍 {{ get_text('Find Services', lang) }}
+            </a>
+            <a href="{{ url_for('materials') }}" class="btn btn-secondary">
+                🛒 {{ get_text('Buy Materials', lang) }}
+            </a>
+            <a href="{{ url_for('architect') }}" class="btn btn-primary">
+                🏗️ {{ get_text('Architect Projects', lang) }}
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats">
+    <div class="stats-container">
+        <div class="stat-card">
+            <div class="stat-number">{{ workers_count }}+</div>
+            <div class="stat-label">{{ get_text('Verified Workers', lang) }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ sellers_count }}+</div>
+            <div class="stat-label">{{ get_text('Material Sellers', lang) }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">50+</div>
+            <div class="stat-label">{{ get_text('Completed Projects', lang) }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">1000+</div>
+            <div class="stat-label">{{ get_text('Happy Customers', lang) }}</div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section style="padding: 4rem 0; background: white;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem; text-align: center;">
+        <h2 style="margin-bottom: 3rem; color: var(--text-dark);">{{ get_text('How It Works', lang) }}</h2>
+        
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🔍</div>
+                <h3>{{ get_text('Choose Service', lang) }}</h3>
+                <p>{{ get_text('Browse through our verified workers and quality materials', lang) }}</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">👤</div>
+                <h3>{{ get_text('Select Provider', lang) }}</h3>
+                <p>{{ get_text('View profiles, portfolios and customer reviews', lang) }}</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">💳</div>
+                <h3>{{ get_text('Book & Pay', lang) }}</h3>
+                <p>{{ get_text('Secure booking system with multiple payment options', lang) }}</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">✅</div>
+                <h3>{{ get_text('Get Service', lang) }}</h3>
+                <p>{{ get_text('Quality guaranteed work with customer support', lang) }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Popular Services Preview -->
+<section style="padding: 4rem 0; background: var(--primary-color);">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+        <h2 style="text-align: center; margin-bottom: 3rem; color: var(--text-dark);">{{ get_text('Popular Services', lang) }}</h2>
+        
+        <div class="services-grid">
+            <div class="service-card" onclick="location.href='{{ url_for('services', category='furniture') }}'">
+                <div class="service-icon">🪑</div>
+                <h3 class="service-title">{{ get_text('Furniture', lang) }}</h3>
+                <p class="service-count">15+ {{ get_text('Workers Available', lang) }}</p>
+                <p class="service-description">{{ get_text('Sofa repair, table making, cabinet installation', lang) }}</p>
+            </div>
+            
+            <div class="service-card" onclick="location.href='{{ url_for('services', category='plumbing') }}'">
+                <div class="service-icon">🔧</div>
+                <h3 class="service-title">{{ get_text('Plumbing', lang) }}</h3>
+                <p class="service-count">23+ {{ get_text('Workers Available', lang) }}</p>
+                <p class="service-description">{{ get_text('Pipe repair, bathroom fitting, water tank installation', lang) }}</p>
+            </div>
+            
+            <div class="service-card" onclick="location.href='{{ url_for('services', category='electrical') }}'">
+                <div class="service-icon">⚡</div>
+                <h3 class="service-title">{{ get_text('Electrical', lang) }}</h3>
+                <p class="service-count">18+ {{ get_text('Workers Available', lang) }}</p>
+                <p class="service-description">{{ get_text('Wiring, fan installation, electrical repairs', lang) }}</p>
+            </div>
+            
+            <div class="service-card" onclick="location.href='{{ url_for('services', category='painting') }}'">
+                <div class="service-icon">🎨</div>
+                <h3 class="service-title">{{ get_text('Painting', lang) }}</h3>
+                <p class="service-count">12+ {{ get_text('Workers Available', lang) }}</p>
+                <p class="service-description">{{ get_text('Wall painting, texture work, exterior painting', lang) }}</p>
+            </div>
+            
+            <div class="service-card" onclick="location.href='{{ url_for('services', category='cleaning') }}'">
+                <div class="service-icon">🏠</div>
+                <h3 class="service-title">{{ get_text('Cleaning', lang) }}</h3>
+                <p class="service-count">20+ {{ get_text('Workers Available', lang) }}</p>
+                <p class="service-description">{{ get_text('Deep cleaning, carpet cleaning, office cleaning', lang) }}</p>
+            </div>
+            
+            <div class="service-card" onclick="location.href='{{ url_for('services', category='ac_repair') }}'">
+                <div class="service-icon">❄️</div>
+                <h3 class="service-title">{{ get_text('AC Repair', lang) }}</h3>
+                <p class="service-count">8+ {{ get_text('Workers Available', lang) }}</p>
+                <p class="service-description">{{ get_text('AC installation, repair, maintenance, gas filling', lang) }}</p>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="{{ url_for('services') }}" class="btn btn-primary">{{ get_text('View All Services', lang) }}</a>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section style="padding: 4rem 0; background: linear-gradient(135deg, var(--accent-color), var(--secondary-color)); color: white; text-align: center;">
+    <div style="max-width: 800px; margin: 0 auto; padding: 0 2rem;">
+        <h2 style="margin-bottom: 1rem;">{{ get_text('Ready to Get Started?', lang) }}</h2>
+        <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9;">{{ get_text('Join thousands of satisfied customers who trust Work 24', lang) }}</p>
+        
+        <div class="cta-buttons">
+            <a href="{{ url_for('career') }}" class="btn btn-secondary">
+                👷 {{ get_text('Join as Worker', lang) }}
+            </a>
+            <a href="{{ url_for('career') }}" class="btn btn-secondary">
+                🏪 {{ get_text('Join as Seller', lang) }}
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

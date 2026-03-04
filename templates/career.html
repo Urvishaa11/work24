@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block title %}{{ get_text('Career', lang) }} - Work 24{% endblock %}
+
+{% block content %}
+<section style="padding: 2rem 0;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+        <h1 style="text-align: center; margin-bottom: 2rem; color: var(--text-dark);">
+            💼 {{ get_text('Join Work 24', lang) }}
+        </h1>
+        
+        <p style="text-align: center; font-size: 1.2rem; color: var(--text-light); margin-bottom: 3rem;">
+            {{ get_text('Choose your role and start earning with Work 24', lang) }}
+        </p>
+
+        <!-- Registration Options -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 3rem; margin-bottom: 4rem;">
+            <!-- Worker Registration -->
+            <div class="profile-card" style="text-align: center; padding: 3rem;">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">👷</div>
+                <h2 style="color: var(--accent-color); margin-bottom: 1rem;">{{ get_text('WORKER', lang) }}</h2>
+                <h3 style="margin-bottom: 2rem;">{{ get_text('Provide Services', lang) }}</h3>
+                
+                <ul style="text-align: left; margin-bottom: 2rem; color: var(--text-light);">
+                    <li>{{ get_text('Get verified customers', lang) }}</li>
+                    <li>{{ get_text('Set your own rates', lang) }}</li>
+                    <li>{{ get_text('Build your reputation', lang) }}</li>
+                    <li>{{ get_text('Flexible working hours', lang) }}</li>
+                    <li>{{ get_text('Direct payments', lang) }}</li>
+                </ul>
+                
+                <div style="margin-bottom: 2rem;">
+                    <strong style="color: var(--nature-color);">{{ get_text('Categories Available:', lang) }}</strong><br>
+                    <span style="color: var(--text-light);">
+                        {{ get_text('Furniture, Plumbing, Electrical, Painting, Cleaning, AC Repair', lang) }}
+                    </span>
+                </div>
+                
+                <a href="{{ url_for('worker_registration') }}" class="btn btn-primary" style="width: 100%;">
+                    {{ get_text('Register as Worker', lang) }}
+                </a>
+            </div>
+
+            <!-- Seller Registration -->
+            <div class="profile-card" style="text-align: center; padding: 3rem;">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">🏪</div>
+                <h2 style="color: var(--accent-color); margin-bottom: 1rem;">{{ get_text('SELLER', lang) }}</h2>
+                <h3 style="margin-bottom: 2rem;">{{ get_text('Sell Materials', lang) }}</h3>
+                
+                <ul style="text-align: left; margin-bottom: 2rem; color: var(--text-light);">
+                    <li>{{ get_text('Reach more customers', lang) }}</li>
+                    <li>{{ get_text('Online store presence', lang) }}</li>
+                    <li>{{ get_text('Inventory management', lang) }}</li>
+                    <li>{{ get_text('Order tracking', lang) }}</li>
+                    <li>{{ get_text('Marketing support', lang) }}</li>
+                </ul>
+                
+                <div style="margin-bottom: 2rem;">
+                    <strong style="color: var(--nature-color);">{{ get_text('Materials You Can Sell:', lang) }}</strong><br>
+                    <span style="color: var(--text-light);">
+                        {{ get_text('Tools, Wood, Hardware, Paint, Electrical, Plumbing', lang) }}
+                    </span>
+                </div>
+                
+                <a href="{{ url_for('seller_registration') }}" class="btn btn-primary" style="width: 100%;">
+                    {{ get_text('Register as Seller', lang) }}
+                </a>
+            </div>
+        </div>
+
+        <!-- How It Works -->
+        <section style="background: white; padding: 3rem; border-radius: 15px; box-shadow: var(--shadow);">
+            <h2 style="text-align: center; margin-bottom: 3rem; color: var(--text-dark);">
+                {{ get_text('How It Works', lang) }}
+            </h2>
+            
+            <div class="services-grid">
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📝</div>
+                    <h3>{{ get_text('1. Register', lang) }}</h3>
+                    <p style="color: var(--text-light);">{{ get_text('Fill out the registration form with your details', lang) }}</p>
+                </div>
+                
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">✅</div>
+                    <h3>{{ get_text('2. Get Approved', lang) }}</h3>
+                    <p style="color: var(--text-light);">{{ get_text('Our team will verify your documents and approve your profile', lang) }}</p>
+                </div>
+                
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🚀</div>
+                    <h3>{{ get_text('3. Start Earning', lang) }}</h3>
+                    <p style="color: var(--text-light);">{{ get_text('Your profile goes live and you start receiving orders', lang) }}</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Requirements -->
+        <section style="margin-top: 3rem;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">
+                <!-- Worker Requirements -->
+                <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: var(--shadow);">
+                    <h3 style="color: var(--accent-color); margin-bottom: 1rem;">{{ get_text('Worker Requirements', lang) }}</h3>
+                    <ul style="color: var(--text-light); line-height: 1.8;">
+                        <li>{{ get_text('Valid Aadhar Card', lang) }}</li>
+                        <li>{{ get_text('Minimum 1 year experience', lang) }}</li>
+                        <li>{{ get_text('Portfolio of previous work', lang) }}</li>
+                        <li>{{ get_text('Valid phone number', lang) }}</li>
+                        <li>{{ get_text('Professional behavior', lang) }}</li>
+                    </ul>
+                </div>
+
+                <!-- Seller Requirements -->
+                <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: var(--shadow);">
+                    <h3 style="color: var(--accent-color); margin-bottom: 1rem;">{{ get_text('Seller Requirements', lang) }}</h3>
+                    <ul style="color: var(--text-light); line-height: 1.8;">
+                        <li>{{ get_text('Valid Business License', lang) }}</li>
+                        <li>{{ get_text('GST Registration', lang) }}</li>
+                        <li>{{ get_text('Quality materials only', lang) }}</li>
+                        <li>{{ get_text('Reliable delivery system', lang) }}</li>
+                        <li>{{ get_text('Customer service commitment', lang) }}</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section style="margin-top: 3rem; background: white; padding: 3rem; border-radius: 15px; box-shadow: var(--shadow);">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: var(--text-dark);">
+                {{ get_text('Frequently Asked Questions', lang) }}
+            </h2>
+            
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: var(--accent-color); margin-bottom: 0.5rem;">{{ get_text('How long does approval take?', lang) }}</h4>
+                    <p style="color: var(--text-light);">{{ get_text('Typically 2-3 business days after document verification', lang) }}</p>
+                </div>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: var(--accent-color); margin-bottom: 0.5rem;">{{ get_text('Is there any registration fee?', lang) }}</h4>
+                    <p style="color: var(--text-light);">{{ get_text('No, registration is completely free', lang) }}</p>
+                </div>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: var(--accent-color); margin-bottom: 0.5rem;">{{ get_text('How do I receive payments?', lang) }}</h4>
+                    <p style="color: var(--text-light);">{{ get_text('Direct bank transfer after service completion', lang) }}</p>
+                </div>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: var(--accent-color); margin-bottom: 0.5rem;">{{ get_text('Can I work in multiple categories?', lang) }}</h4>
+                    <p style="color: var(--text-light);">{{ get_text('Yes, you can register for multiple service categories', lang) }}</p>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+{% endblock %}
