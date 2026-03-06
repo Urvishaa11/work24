@@ -67,30 +67,49 @@ class Work24App {
     }
 
     // Navigation
-    setupNavigation() {
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const navMenu = document.querySelector('.nav-menu');
+    // Navigation
+setupNavigation() {
+    // Burger menu functionality
+    const burgerMenu = document.getElementById('burgerMenu');
+    const navMenu = document.getElementById('navMenu');
 
-        if (mobileMenuBtn && navMenu) {
-            mobileMenuBtn.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
-            });
-        }
+    if (burgerMenu && navMenu) {
+        burgerMenu.addEventListener('click', () => {
+            burgerMenu.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
 
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+        // Close menu when clicking on a link
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                burgerMenu.classList.remove('active');
+                navMenu.classList.remove('active');
             });
         });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!burgerMenu.contains(e.target) && !navMenu.contains(e.target)) {
+                burgerMenu.classList.remove('active');
+                navMenu.classList.remove('active');
+            }
+        });
     }
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+}
 
     // Search Functionality
     setupSearch() {
@@ -393,3 +412,4 @@ if ('serviceWorker' in navigator) {
             });
     });
 }
+
