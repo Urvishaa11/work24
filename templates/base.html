@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Work 24 - Your Service Partner{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
     <meta name="description" content="Work 24 - Connecting skilled workers, sellers and customers across India">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Debug info -->
+<div style="position: fixed; top: 0; right: 0; background: red; color: white; padding: 10px; z-index: 9999; font-size: 12px;">
+    <div>Lang: {{ lang }}</div>
+    <div>Session: {{ session.get('language', 'not set') }}</div>
+</div>
     <!-- Language Selection Modal -->
     <div id="languageModal" class="language-modal" style="display: none;">
         <div class="language-content">
@@ -24,28 +28,48 @@
     </div>
 
     <!-- Header -->
-    <header class="header">
-        <div class="nav-container">
-            <a href="{{ url_for('index') }}" class="logo">🔧 WORK 24</a>
-            
-            <nav>
-                <ul class="nav-menu">
-                    <li><a href="{{ url_for('index') }}">{{ get_text('Home', lang) }}</a></li>
-                    <li><a href="{{ url_for('services') }}">{{ get_text('Services', lang) }}</a></li>
-                    <li><a href="{{ url_for('materials') }}">{{ get_text('Materials', lang) }}</a></li>
-                    <li><a href="{{ url_for('architect') }}">{{ get_text('Architect', lang) }}</a></li>
-                    <li><a href="{{ url_for('career') }}">{{ get_text('Career', lang) }}</a></li>
-                    <li><a href="{{ url_for('contact') }}">{{ get_text('Contact', lang) }}</a></li>
-                </ul>
-            </nav>
-
-            <div class="language-selector">
-                <button class="lang-btn {{ 'active' if lang == 'hindi' else '' }}" onclick="setLanguage('hindi')">हिं</button>
-                <button class="lang-btn {{ 'active' if lang == 'english' else '' }}" onclick="setLanguage('english')">EN</button>
-                <button class="lang-btn {{ 'active' if lang == 'gujarati' else '' }}" onclick="setLanguage('gujarati')">ગુ</button>
-            </div>
+    <!-- Header -->
+<header class="header">
+    <div class="nav-container">
+        <a href="{{ url_for('index') }}" class="logo">🔧 WORK 24</a>
+        
+        <!-- Burger Menu Button -->
+        <div class="burger-menu" id="burgerMenu">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
-    </header>
+        
+        <nav>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="{{ url_for('index') }}">{{ get_text('Home', lang) }}</a></li>
+                <li><a href="{{ url_for('services') }}">{{ get_text('Services', lang) }}</a></li>
+                <li><a href="{{ url_for('materials') }}">{{ get_text('Materials', lang) }}</a></li>
+                <li><a href="{{ url_for('architect') }}">{{ get_text('Architect', lang) }}</a></li>
+                <li><a href="{{ url_for('career') }}">{{ get_text('Career', lang) }}</a></li>
+                <li><a href="{{ url_for('contact') }}">{{ get_text('Contact', lang) }}</a></li>
+                
+                <!-- Mobile language section - all 3 options -->
+                <!-- Mobile language section -->
+                <li class="mobile-language-section">
+                    <div class="mobile-languages">
+                        <span class="language-label">{{ get_text('Language', lang) }}:</span>
+                        <button class="mobile-lang-btn {{ 'active' if lang == 'hindi' else '' }}" onclick="app.setLanguage('hindi')">🇮🇳 हिंदी</button>
+                        <button class="mobile-lang-btn {{ 'active' if lang == 'english' else '' }}" onclick="app.setLanguage('english')">🇬🇧 English</button>
+                        <button class="mobile-lang-btn {{ 'active' if lang == 'gujarati' else '' }}" onclick="app.setLanguage('gujarati')">🇮🇳 ગુજરાતી</button>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Desktop language selector -->
+        <div class="language-selector desktop-only">
+            <button class="lang-btn {{ 'active' if lang == 'hindi' else '' }}" onclick="app.setLanguage('hindi')">हिं</button>
+            <button class="lang-btn {{ 'active' if lang == 'english' else '' }}" onclick="app.setLanguage('english')">EN</button>
+            <button class="lang-btn {{ 'active' if lang == 'gujarati' else '' }}" onclick="app.setLanguage('gujarati')">ગુ</button>
+        </div>
+    </div>
+</header>
 
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
