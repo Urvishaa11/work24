@@ -12,8 +12,8 @@ db = SQLAlchemy(app)
 
 # Admin credentials (change these in production!)
 ADMIN_CREDENTIALS = {
-    'admin': 'admin123',
-    'superadmin': 'super123'
+    'Admin': 'Admin123',
+    'admin': 'Admin123'
 }
 
 # Database Models
